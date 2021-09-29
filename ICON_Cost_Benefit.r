@@ -100,7 +100,7 @@ pca_res <- prcomp(df[,-grep(pattern = "Section",x = colnames(df))], scale. = F)
 
 pdf("ICON_PCA.pdf", width = 12)
 autoplot(pca_res, data = df, colour = 'Section', loadings = TRUE,
-         loadings.label = TRUE, loadings.label.size = 3,loadings.colour = 'black')
+         loadings.label = TRUE, loadings.label.size = 3,loadings.colour = 'black',size=4)
 dev.off()
 
 
