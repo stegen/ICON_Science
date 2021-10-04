@@ -103,4 +103,38 @@ autoplot(pca_res, data = df, colour = 'Section', loadings = TRUE,
          loadings.label = TRUE, loadings.label.size = 3,loadings.colour = 'black',size=4)
 dev.off()
 
+#####
+# start analysis of the survey data
+#####
+
+# note that the relevant column names were changed manually before reading in
+survey = read.csv("03 - ICON Special Collection - Participation Survey (Responses) - Form Responses 1.csv",skip=0,stringsAsFactors = F)
+head(survey)
+
+# filling in the no response cells
+cols.to.loop = c("I_before","C_before","O_before","N_before","I_now","C_now","O_now","N_now")
+for (col.use in cols.to.loop) {
+  
+  survey[which(survey[,col.use] == ""),col.use] = "No Response"
+  
+}
+
+# making plots
+
+
+plot(as.factor(c(survey$I_before,survey$C_before,survey$O_before,survey$N_before)),ylab="Responses",main="ICON Before")
+plot(as.factor(c(survey$I_now,survey$C_now,survey$O_now,survey$N_now)),ylab="Responses",main="ICON After")
+
+icon.before = summary(as.factor(c(survey$I_before,survey$C_before,survey$O_before,survey$N_before)))
+icon.after = summary(as.factor(c(survey$I_now,survey$C_now,survey$O_now,survey$N_now)))
+
+icon.comp = rbind(icon.before,icon.after)
+
+pdf("ICON_Importance.pdf",width=12)
+par(mar=c(5, 5, 4, 2) + 0.1)
+barplot(icon.comp,beside=T,ylab="Number of Responses",col=c("light green" , "skyblue"),cex.axis = 1.5,cex.lab=2,cex.names = 1.5,ylim=c(0,215))
+legend(x = 1,y = 200,legend = c("Before","After"),col=c("light green" , "skyblue"),pch=15,cex=2)
+box()
+dev.off()
+
 
